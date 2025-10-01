@@ -1,17 +1,24 @@
-# Broken Word Counter Example
+
 import sys
 
 def count_words(filename):
-    with open(filename, "r") as f:
-        data = f.readlines()
-        return len(data)  # Bug: counts lines only!
+    try:
+        with open(filename, "r") as f:
+            data = f.read()
+    except FileNotFoundError:
+        print(f"Error: file '{filename}' not found.")
+        return None
+    word_list = data.split()
+    return len(word_list)
 
 def main():
     if len(sys.argv) < 2:
-        print("Missing argument: filename")
+        print("Usage: python3 word_counter.py <filename>")
         return
     filename = sys.argv[1]
-    print("Total lines in file:", count_words(filename))  # Wrong output message
+    result = count_words(filename)
+    if result is not None:
+        print("Total words in file:", result)
 
 if __name__ == "__main__":
     main()
